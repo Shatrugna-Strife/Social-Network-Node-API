@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+
 const morgan = require('morgan');
 const mongoose = require('mongoose')
 //.env file
@@ -7,6 +8,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 //bring in routes
 const postRoutes = require('./routes/post');
+const bodyParser = require('body-parser');
+const expressValidator = require('express-validator');
 
 mongoose.connect(
     process.env.MONGO_URI, { useUnifiedTopology: true,  useNewUrlParser: true }
@@ -23,7 +26,8 @@ mongoose.connection.on('error', err => {
 //middleware
 // app.use(myOwnMiddleware);
 app.use(morgan("dev"));
-
+app.use(bodyParser.json());
+app.use(expressValidator()); // Deprecated
 app.use("/", postRoutes.router);
 
 
