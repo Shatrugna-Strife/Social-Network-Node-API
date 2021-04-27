@@ -8,8 +8,10 @@ const dotenv = require('dotenv');
 dotenv.config();
 //bring in routes
 const postRoutes = require('./routes/post');
+const authRoutes = require('./routes/auth');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
+const cookieParser = require("cookie-parser");
 
 mongoose.connect(
     process.env.MONGO_URI, { useUnifiedTopology: true,  useNewUrlParser: true }
@@ -27,8 +29,10 @@ mongoose.connection.on('error', err => {
 // app.use(myOwnMiddleware);
 app.use(morgan("dev"));
 app.use(bodyParser.json());
+app.use(cookieParser());
 app.use(expressValidator()); // Deprecated
 app.use("/", postRoutes.router);
+app.use("/", authRoutes.router);
 
 
 
