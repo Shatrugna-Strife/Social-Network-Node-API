@@ -6,7 +6,7 @@ exports.userSignupValidator = (req,res,next)=>{
     
     //email
     // req.check("email","Write a body").notEmpty();
-    req.check("email","Email must be between 3 to 32 characters").matches(/.+\@.+\..+/).withMessage("Email must contain @").isLength({
+    req.check("email","Email must be between 3 to 2000 characters").matches(/.+\@.+\..+/).withMessage("Email must contain @").isLength({
         min: 4,
         max: 2000
     });
@@ -14,15 +14,15 @@ exports.userSignupValidator = (req,res,next)=>{
     //check for password
     req.check("password", "Password is required").notEmpty();
     req.check("password").isLength({min: 6}).withMessage("Password must contain atleast 6 characters")
-    .matches(/\d/).withMessage("Must contain a number");
+    .matches(/\d/).withMessage("Password must contain a number");
     
     // check for errors
     const errors = req.validationErrors();
 
     //if error show the first one as they happen
     if(errors){
-        const firstError = errors.map((error) => error.msg)[0];
-        // const firstError = errors[0].msg;
+        // const firstError = errors.map((error) => error.msg)[0];
+        const firstError = errors[0].msg;
         return res.status(400).json({error: firstError});
     }
     //next middleware

@@ -1,0 +1,15 @@
+FIrst STEP - -- - - - -- - - -- - 
+
+add parameter routing   local host:8080/userid93781239
+it appends user data onto the packet and will sent to the next step of authorization
+
+req.profile = user (user data)
+
+second step --- --- -- -- - - -- 
+
+add property called auth in requireSignin()
+so that we know the user is authenticated
+
+third step  - - -- - -- -- -- -- - -- -- - -- -
+
+create hashAuthorization () to make sure the req object has req.profile req.auth req.profile._id === req.auth._id

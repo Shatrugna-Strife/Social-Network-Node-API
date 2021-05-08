@@ -7,9 +7,12 @@ const validator = require("../validator");
 const router = express.Router();
 
 // router.get('/', postController.getPosts);
-router.post('/signup', validator.userSignupValidator,authController.signup);
-router.post('/signin',authController.signin);
-router.post('/signout',authController.signout);
+router.get('/users',userController.allUsers);
+router.get('/user/:userId', authController.requireSignin,userController.getUser);
+router.put('/user/:userId', authController.requireSignin,userController.hasAuthorization,userController.updateUser);
+router.delete('/user/:userId', authController.requireSignin,userController.hasAuthorization,userController.deleteUser);
+//router.put('/user/:userId', authController.requireSignin,userController.updateUser);
+
 // any route containing :userId, the app will first execute userByID()
 router.param("userId", userController.userById);
 

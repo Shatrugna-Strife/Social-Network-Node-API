@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
-const user = require("../models/user");
 require("dotenv").config();
 const User = require("../models/user");
+const expressJwt = require('express-jwt');
 
 exports.signup = async (req,res) => {
     const userExists = await User.findOne({email: req.body.email})
@@ -29,12 +29,13 @@ exports.signin = (req,res) =>{
         //if user is found make sure tthe email and password match
         //create authnticate method in model and use here
         if(!user.authenticate(password)){
-            return res.status(401),json({
-                error: "Email and password do not match"
+            return res.status(401).json({
+                error: "Wrong Password"
             })
         }
         //generate a token with user id and secret
         const token = jwt.sign({_id:user._id}, process.env.JWT_SECRET);
+        // The json {_id } gets stored in the token and is accessible 
         //persist the token as't' in cookie with expiry date
         res.cookie("t",token,{expire: new Date() + 9999});
         //return response with user and token to frontend client
@@ -51,3 +52,11 @@ exports.signout = (req,res) => {
         message: "Signout Success"
     })
 };
+
+exports.requireSignin = expressJwt({
+    secret: process.env.JWT_SECRET,
+    algorithms: ["HS256"],  // needed for later version
+    //if the token is valid, express jwt appends the verified user's id in auth key (json format) and append to the request object
+    userProperty: "auth"
+    // The Stored json object can be expressed through the auth object
+});

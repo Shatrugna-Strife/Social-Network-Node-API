@@ -9,6 +9,7 @@ dotenv.config();
 //bring in routes
 const postRoutes = require('./routes/post');
 const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const cookieParser = require("cookie-parser");
@@ -33,6 +34,14 @@ app.use(cookieParser());
 app.use(expressValidator()); // Deprecated
 app.use("/", postRoutes.router);
 app.use("/", authRoutes.router);
+app.use("/", userRoutes.router);
+app.use(function (err, req, res, next) {
+    if (err.name === 'UnauthorizedError') {
+        res.status(401).json({
+            error: "Unathorized"
+        });
+    }
+});
 
 
 
