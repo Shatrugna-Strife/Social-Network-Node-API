@@ -13,6 +13,11 @@ const userRoutes = require('./routes/user');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const cookieParser = require("cookie-parser");
+const multer = require('multer');
+const formidable = require('express-formidable');
+
+
+const upload = multer();
 
 mongoose.connect(
     process.env.MONGO_URI, { useUnifiedTopology: true,  useNewUrlParser: true }
@@ -29,7 +34,16 @@ mongoose.connection.on('error', err => {
 //middleware
 // app.use(myOwnMiddleware);
 app.use(morgan("dev"));
+// app.use(express.bodyParser());
+// app.use(express.json());
+// app.use(express.urlencoded());
+// app.use(express.multipart());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(formidable());
+app.use(upload.array());
+app.use(express.static('public'));
+// app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(expressValidator()); // Deprecated
 app.use("/", postRoutes.router);
