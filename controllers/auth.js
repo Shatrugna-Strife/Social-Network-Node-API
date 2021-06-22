@@ -4,7 +4,9 @@ const User = require("../models/user");
 const expressJwt = require('express-jwt');
 
 exports.signup = async (req,res) => {
+    console.log("debug123", req.body);
     const userExists = await User.findOne({email: req.body.email})
+    console.log("debug123");
     if(userExists) return res.status(403).json({
         error: "Email is taken!"
     });

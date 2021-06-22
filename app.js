@@ -14,7 +14,6 @@ const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const cookieParser = require("cookie-parser");
 const multer = require('multer');
-const formidable = require('express-formidable');
 
 
 const upload = multer();
@@ -26,22 +25,23 @@ mongoose.connect(
 mongoose.connection.on('error', err => {
     console.log(`DB Connection error: ${err}`);
 });
-// const myOwnMiddleware = (req,res,next) => {
-//     console.log("middleware applied");
-//     next(); // Pass the middleware loop to the next one otherwise the app would stuck here
-// };
+const myOwnMiddleware = (req,res,next) => {
+    console.log("middleware applied");
+    console.log(req.body);
+    next(); // Pass the middleware loop to the next one otherwise the app would stuck here
+};
 
 //middleware
-// app.use(myOwnMiddleware);
+
 app.use(morgan("dev"));
+// app.use(myOwnMiddleware);
 // app.use(express.bodyParser());
 // app.use(express.json());
 // app.use(express.urlencoded());
 // app.use(express.multipart());
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(formidable());
-app.use(upload.array());
+// app.use(upload.array());
 app.use(express.static('public'));
 // app.use(bodyParser.urlencoded());
 app.use(cookieParser());

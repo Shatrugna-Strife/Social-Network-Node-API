@@ -7,8 +7,10 @@ const validator = require('../validator'); // no need to mention for index.js it
 const router = express.Router();
 
 router.get('/', authController.requireSignin,postController.getPosts);
-// router.post('/post/new/:userId', authController.requireSignin, userController.hasAuthorization, postController.createPost);//, validator.createPostValidator);
-router.post('/post/new/:userId', postController.createPost);
+router.post('/post/new/:userId', authController.requireSignin, userController.hasAuthorization, postController.createPost);//, validator.createPostValidator);
+router.get('/posts/by/:userId', authController.requireSignin, postController.postsByUser);
+// router.post('/post/new/:userId', postController.createPost);
+// router.post('/post/new', postController.createPost);
 
 // any route containing :userId, the app will first execute userByID()
 router.param("userId", userController.userById);
