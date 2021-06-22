@@ -1,0 +1,29 @@
+{
+    "/": "GET - api docs",
+    "/signup":{
+        "httpCall": "POST",
+        "name":"username",
+        "email":"example@email.com",
+        "password":"password"
+    },
+    "/signin":{
+        "httpCall": "POST",
+        "name":"username",
+        "email":"example@email.com",
+        "password":"password"
+    },
+    "/signout":"GET - signout",
+    "/users":"GET - get all users",
+    "/user/:userId" : {
+        "GET" : "get User",
+        "PUT" : "update user",
+        "DELETE" : "delete user"
+    },
+    "/posts" : "Get all posts",
+    "/post/new/:userId":"POST - create new post by user ID",
+    "/posts/by/:userID": "GET - get posts of that user",
+    "/post/:postId":{
+        "PUT" : "update post",
+        "DELETE" : "delete post"
+    }
+}

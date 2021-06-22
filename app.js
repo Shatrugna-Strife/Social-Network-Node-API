@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+const fs = require('fs');
+const cors = require("cors");
 
 const morgan = require('morgan');
 const mongoose = require('mongoose')
@@ -16,7 +18,7 @@ const cookieParser = require("cookie-parser");
 const multer = require('multer');
 
 
-const upload = multer();
+// const upload = multer();
 
 mongoose.connect(
     process.env.MONGO_URI, { useUnifiedTopology: true,  useNewUrlParser: true }
@@ -46,6 +48,7 @@ app.use(express.static('public'));
 // app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(expressValidator()); // Deprecated
+app.use(cors());
 app.use("/", postRoutes.router);
 app.use("/", authRoutes.router);
 app.use("/", userRoutes.router);
@@ -55,6 +58,18 @@ app.use(function (err, req, res, next) {
             error: "Unathorized"
         });
     }
+});
+
+app.get("/", (req,res)=>{
+    fs.readFile("docs/apiDoc.json",(err,data)=>{
+        if(err){
+            return res.json({
+                error:err
+            });
+        }
+        const docs = JSON.parse(data);
+        res.json(docs);
+    });
 });
 
 

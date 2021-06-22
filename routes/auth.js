@@ -9,7 +9,7 @@ const router = express.Router();
 // router.get('/', postController.getPosts);
 router.post('/signup', validator.userSignupValidator,authController.signup);
 router.post('/signin',authController.signin);
-router.post('/signout',authController.signout);
+router.get('/signout',authController.signout);
 // any route containing :userId, the app will first execute userByID()
 router.param("userId", userController.userById);
 
