@@ -17,7 +17,7 @@ exports.postById = (req,res,next,id) => {
 }
 
 exports.isPoster = (req,res,next) =>{
-    let isPoster = req.auth && req.post && req.auth._id == req.post.postedBy._id;
+    let isPoster = !!req.auth && !!req.post && req.auth._id == req.post.postedBy._id;
     if(!isPoster){
         return res.status(403).json({
             error: "User is not authorised"
@@ -77,7 +77,7 @@ exports.createPost = (req,res, next) => {
     form.keepExtensions = true;
     // console.log("re.profile",req.profile);
     form.parse(req, (err, fields, files)=>{
-        console.log(fields);
+        // console.log(fields);
         if(err){
             // console.log(err);
             return res.status(400).json({

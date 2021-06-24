@@ -16,9 +16,7 @@ exports.userById = (req,res,next,id) => {
 
 exports.hasAuthorization = (req,res,next)=>{
     let authorized = false;
-    if (req.profile!=undefined){
-        authorized = req.auth && req.profile._id.toString() === req.auth._id;
-    }
+    authorized = !!req.profile && !!req.auth && req.profile._id.toString() === req.auth._id;
     //const authorized = req.profile && req.auth && req.profile._id.toString() === req.auth._id;
     if(!authorized){
         return res.status(403).json({
